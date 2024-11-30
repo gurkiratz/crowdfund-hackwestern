@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 // import { useAuth } from '@clerk/nextjs'
+import { useAccount, useNetwork } from '@starknet-react/core'
 
 export default function CreateCampaign() {
   const [title, setTitle] = useState('')
@@ -11,14 +12,66 @@ export default function CreateCampaign() {
   const [goal, setGoal] = useState('')
   const [deadline, setDeadline] = useState('')
   const router = useRouter()
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
   // const { userId } = useAuth()
+
+  const { account, status, address: accountAddress } = useAccount()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    // setIsLoading(true)
+    setError(null)
     // Placeholder for actual campaign creation logic
-    console.log('Creating campaign:', { title, imageUrl, description, goal, deadline })
+    
     // Simulate campaign creation and redirect
     router.push('/')
+
+    if (status === 'connected' && accountAddress) {
+      console.log('Creating campaign:', {
+        title,
+        imageUrl,
+        description,
+        goal,
+        deadline,
+        creatorId: accountAddress
+      })
+      const campaignData = {
+        title,
+        imageUrl,
+        description,
+        goal,
+        deadline,
+        creatorId: accountAddress, // Use StarkNet wallet address as creatorId
+      }
+
+      // Insert into the database
+      try {
+        const response = await fetch('/api/campaigns', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(campaignData),
+        })
+
+        if (!response.ok) {
+          throw new Error('Failed to create campaign')
+        }
+
+        const data = await response.json()
+        console.log('Campaign created successfully!', data)
+        router.push('/')
+      } catch (error) {
+        console.error('Error creating campaign:', error)
+        setError('Failed to create campaign. Please try again.')
+      } finally {
+        setIsLoading(false)
+      }
+    } else {
+      alert('Error: Wallet not connected')
+      console.error('Wallet not connected')
+    }
   }
 
   return (
@@ -26,7 +79,10 @@ export default function CreateCampaign() {
       <h1 className="text-3xl font-bold mb-8">Create a New Campaign</h1>
       <form onSubmit={handleSubmit} className="max-w-2xl mx-auto">
         <div className="mb-4">
-          <label htmlFor="title" className="block text-gray-700 text-sm font-bold mb-2">
+          <label
+            htmlFor="title"
+            className="block text-gray-700 text-sm font-bold mb-2"
+          >
             Title
           </label>
           <input
@@ -39,7 +95,10 @@ export default function CreateCampaign() {
           />
         </div>
         <div className="mb-4">
-          <label htmlFor="imageUrl" className="block text-gray-700 text-sm font-bold mb-2">
+          <label
+            htmlFor="imageUrl"
+            className="block text-gray-700 text-sm font-bold mb-2"
+          >
             Image URL
           </label>
           <input
@@ -52,7 +111,10 @@ export default function CreateCampaign() {
           />
         </div>
         <div className="mb-4">
-          <label htmlFor="description" className="block text-gray-700 text-sm font-bold mb-2">
+          <label
+            htmlFor="description"
+            className="block text-gray-700 text-sm font-bold mb-2"
+          >
             Description
           </label>
           <textarea
@@ -65,7 +127,10 @@ export default function CreateCampaign() {
           ></textarea>
         </div>
         <div className="mb-4">
-          <label htmlFor="goal" className="block text-gray-700 text-sm font-bold mb-2">
+          <label
+            htmlFor="goal"
+            className="block text-gray-700 text-sm font-bold mb-2"
+          >
             Goal (ETH)
           </label>
           <input
@@ -80,7 +145,10 @@ export default function CreateCampaign() {
           />
         </div>
         <div className="mb-6">
-          <label htmlFor="deadline" className="block text-gray-700 text-sm font-bold mb-2">
+          <label
+            htmlFor="deadline"
+            className="block text-gray-700 text-sm font-bold mb-2"
+          >
             Deadline
           </label>
           <input
@@ -104,4 +172,3 @@ export default function CreateCampaign() {
     </div>
   )
 }
-

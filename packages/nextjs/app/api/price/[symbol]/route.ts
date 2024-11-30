@@ -3,7 +3,7 @@ export async function GET(
   { params: { symbol } }: { params: { symbol: string } },
 ) {
   let apiUrl = "";
-  if (symbol === "ETH") {
+  if (symbol === "ETH") { 
     apiUrl =
       "https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd";
   } else if (symbol === "STRK") {

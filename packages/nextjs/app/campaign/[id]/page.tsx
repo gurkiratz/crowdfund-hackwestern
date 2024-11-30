@@ -3,51 +3,55 @@ import Image from 'next/image'
 import { db } from '../../../lib/db'
 import { campaigns } from '../../../lib/db/schema'
 import { FundingInterface } from '../../../components/FundingInterface'
+import { eq } from 'drizzle-orm'
 
 export default async function CampaignPage({ params }: { params: { id: string } }) {
   
-  const sampleCampaigns = [
-    {
-      id: 1,
-      title: 'Campaign 1',
-      imageUrl: 'https://via.placeholder.com/800x400',
-      description: 'Description for campaign 1',
-      goal: 1000,
-      deadline: new Date('2023-12-31'),
-    },
-    {
-      id: 2,
-      title: 'Campaign 2',
-      imageUrl: 'https://via.placeholder.com/800x400',
-      description: 'Description for campaign 2',
-      goal: 2000,
-      deadline: new Date('2023-12-31'),
-    },
-    {
-      id: 3,
-      title: 'Campaign 3',
-      imageUrl: 'https://via.placeholder.com/800x400',
-      description: 'Description for campaign 3',
-      goal: 3000,
-      deadline: new Date('2023-12-31'),
-    },
-  ]
+  // const sampleCampaigns = [
+  //   {
+  //     id: 1,
+  //     title: 'Campaign 1',
+  //     imageUrl: 'https://via.placeholder.com/800x400',
+  //     description: 'Description for campaign 1',
+  //     goal: 1000,
+  //     deadline: new Date('2023-12-31'),
+  //   },
+  //   {
+  //     id: 2,
+  //     title: 'Campaign 2',
+  //     imageUrl: 'https://via.placeholder.com/800x400',
+  //     description: 'Description for campaign 2',
+  //     goal: 2000,
+  //     deadline: new Date('2023-12-31'),
+  //   },
+  //   {
+  //     id: 3,
+  //     title: 'Campaign 3',
+  //     imageUrl: 'https://via.placeholder.com/800x400',
+  //     description: 'Description for campaign 3',
+  //     goal: 3000,
+  //     deadline: new Date('2023-12-31'),
+  //   },
+  // ]
 
-  const campaign = sampleCampaigns.find(c => c.id === parseInt(params.id))
+  // const campaign = sampleCampaigns.find(c => c.id === parseInt(params.id))
   
-  if (!campaign) {
-    notFound()
-  }
-
-
-  // const campaign = await db.select().from(campaigns).where(campaigns.id.eq(parseInt(params.id))).limit(1)
-
-  // if (!campaign.length) {
+  // if (!campaign) {
   //   notFound()
   // }
 
-  // const { title, imageUrl, description, goal, deadline } = campaign[0]
-  const { title, imageUrl, description, goal, deadline } = campaign
+
+  const campaign = await db.select()
+  .from(campaigns)
+  .where(eq(campaigns.id, parseInt(params.id)))
+  .limit(1);
+
+  if (!campaign.length) {
+    notFound()
+  }
+
+  const { title, imageUrl, description, goal, deadline } = campaign[0]
+  // const { title, imageUrl, description, goal, deadline } = campaign
 
   return (
     <div className="container mx-auto px-4 py-8">
