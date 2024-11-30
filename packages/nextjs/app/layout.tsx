@@ -1,26 +1,30 @@
-import type { Metadata } from "next";
-import { ScaffoldStarkAppWithProviders } from "~~/components/ScaffoldStarkAppWithProviders";
-import "~~/styles/globals.css";
-import { ThemeProvider } from "~~/components/ThemeProvider";
+import type { Metadata } from 'next'
+import { ScaffoldStarkAppWithProviders } from '~~/components/ScaffoldStarkAppWithProviders'
+import '~~/styles/globals.css'
+import { ThemeProvider } from '~~/components/ThemeProvider'
+// import { ClerkProvider } from '@clerk/nextjs'
 
 export const metadata: Metadata = {
-  title: "Scaffold-Stark",
-  description: "Fast track your starknet journey",
-  icons: "/logo.ico",
-};
+  title: 'Crowdfund - Starknet',
+  description:
+    'A decentralized crowdfunding platform built with Next.js and Starknet',
+  icons: '/logo.ico',
+}
 
 const ScaffoldStarkApp = ({ children }: { children: React.ReactNode }) => {
   return (
     <html suppressHydrationWarning>
       <body>
         <ThemeProvider enableSystem>
-          <ScaffoldStarkAppWithProviders>
-            {children}
-          </ScaffoldStarkAppWithProviders>
+          {/* <ClerkProvider> */}
+            <ScaffoldStarkAppWithProviders>
+              {children}
+            </ScaffoldStarkAppWithProviders>
+          {/* </ClerkProvider> */}
         </ThemeProvider>
       </body>
     </html>
-  );
-};
+  )
+}
 
-export default ScaffoldStarkApp;
+export default ScaffoldStarkApp
