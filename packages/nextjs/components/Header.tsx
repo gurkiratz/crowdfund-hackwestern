@@ -4,7 +4,7 @@ import React, { useCallback, useRef, useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Bars3Icon, BugAntIcon } from '@heroicons/react/24/outline'
+import { Bars3Icon, BugAntIcon, CakeIcon } from '@heroicons/react/24/outline'
 import { useOutsideClick } from '~~/hooks/scaffold-stark'
 import { CustomConnectButton } from '~~/components/scaffold-stark/CustomConnectButton'
 import { useTheme } from 'next-themes'
@@ -28,7 +28,14 @@ export const menuLinks: HeaderMenuLink[] = [
   {
     label: 'Debug Contracts',
     href: '/debug',
-    icon: <BugAntIcon className="h-4 w-4" />,
+  },
+  {
+    label: 'Create Campaign',
+    href: '/create-campaign',
+  },
+  {
+    label: 'Dashboard',
+    href: '/dashboard',
   },
 ]
 
@@ -128,7 +135,7 @@ export const Header = () => {
               setIsDrawerOpen((prevIsOpenState) => !prevIsOpenState)
             }}
           >
-            <Bars3Icon className="h-1/2" />
+            <CakeIcon className="h-1/2" />
           </label>
           {isDrawerOpen && (
             <ul
@@ -156,8 +163,8 @@ export const Header = () => {
             />
           </div>
           <div className="flex flex-col">
-            <span className="font-bold leading-tight">Scaffold-Stark</span>
-            <span className="text-xs">Starknet dev stack</span>
+            <span className="font-bold leading-tight">Crowdfund-</span>
+            <span className="text-xs">Powered by StarkNet</span>
           </div>
         </Link>
         <ul className="hidden lg:flex lg:flex-nowrap menu menu-horizontal px-1 gap-2">

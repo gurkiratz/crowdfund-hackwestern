@@ -2,18 +2,29 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { useAccount, useNetwork } from '@starknet-react/core'
 
 export function FundingInterface({ campaignId }: { campaignId: string }) {
   const [amount, setAmount] = useState('')
+  const { account, status, address: accountAddress } = useAccount()
+
   const router = useRouter()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     // Placeholder for actual funding logic
-    console.log(`Funding campaign ${campaignId} with ${amount} ETH`)
-    // Simulate a transaction hash
-    const transactionHash = `0x${Array.from({length: 64}, () => Math.floor(Math.random() * 16).toString(16)).join('')}`
-    router.push(`/transaction/${transactionHash}`)
+    if (status === 'connected' && accountAddress) {
+      console.log(`Funding campaign ${campaignId} with ${amount} ETH`)
+      // Simulate a transaction hash
+      const transactionHash = `0x${Array.from({length: 64}, () => Math.floor(Math.random() * 16).toString(16)).join('')}`
+      router.push(`/transaction/${transactionHash}`)
+    } else {
+      alert('Error: Wallet not connected')
+      console.error('Wallet not connected')
+    }
+
+
+    
   }
 
   return (
@@ -21,7 +32,7 @@ export function FundingInterface({ campaignId }: { campaignId: string }) {
       <h2 className="text-2xl font-bold mb-4">Fund this campaign</h2>
       <div className="mb-4">
         <label htmlFor="amount" className="block text-gray-700 text-sm font-bold mb-2">
-          Amount (ETH)
+          Amount (STARK)
         </label>
         <input
           type="number"

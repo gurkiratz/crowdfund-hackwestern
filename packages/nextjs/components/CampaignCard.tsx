@@ -11,19 +11,38 @@ export function CampaignCard({ campaign }: CampaignCardProps) {
 
   return (
     <Link href={`/campaign/${campaign.id}`} className="block">
-      <div className="border rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300">
-        <Image src={campaign.imageUrl} alt={campaign.title} width={400} height={200} className="w-full h-48 object-cover" />
-        <div className="p-4">
-          <h2 className="text-xl font-semibold mb-2">{campaign.title}</h2>
-          <p className="text-gray-600 mb-4 line-clamp-2">{campaign.description}</p>
-          <div className="mb-2">
+      <div className="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
+        <div className="relative h-48">
+          <Image 
+            src={campaign.imageUrl} 
+            alt={campaign.title} 
+            layout="fill" 
+            objectFit="cover"
+          />
+        </div>
+        <div className="p-6">
+          <h3 className="text-xl font-semibold text-gray-900 mb-2">{campaign.title}</h3>
+          <p className="text-gray-600 mb-4 h-12 overflow-hidden">{campaign.description}</p>
+          <div className="mb-4">
             <div className="w-full bg-gray-200 rounded-full h-2.5">
-              <div className="bg-blue-600 h-2.5 rounded-full" style={{ width: `${progress}%` }}></div>
+              <div 
+                className="bg-blue-600 h-2.5 rounded-full" 
+                style={{ width: `${progress}%` }}
+              ></div>
+            </div>
+            <div className="flex justify-between text-sm text-gray-500 mt-2">
+              <span>{progress}% Funded</span>
+              <span>{campaign.goal.toLocaleString()} ETH Goal</span>
             </div>
           </div>
-          <p className="text-sm text-gray-500">
-            {campaign.goal.toLocaleString()} ETH goal
-          </p>
+          <div className="flex justify-between items-center">
+            <span className="text-sm text-gray-500">
+              {new Date(campaign.deadline).toLocaleDateString()}
+            </span>
+            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+              Active
+            </span>
+          </div>
         </div>
       </div>
     </Link>

@@ -27,7 +27,7 @@ export default function TransactionPage({ params }: { params: { hash: string } }
           rel="noopener noreferrer"
           className="text-blue-500 hover:underline"
         >
-          View on Etherscan
+          View on Starkscan
         </a>
       </div>
     </div>

@@ -1,3 +1,4 @@
+import { Address } from '@starknet-react/chains';
 import { pgTable, serial, varchar, text, integer, timestamp } from 'drizzle-orm/pg-core'
 
 export const campaigns = pgTable('campaigns', {
@@ -20,3 +21,22 @@ export const contributions = pgTable('contributions', {
   createdAt: timestamp('created_at').defaultNow().notNull(),
 })
 
+export type Campaign = {
+  id: number;
+  title: string;
+  imageUrl: string; 
+  description: string;
+  goal: number;
+  deadline: Date;
+  creatorId: Address;
+  createdAt: Date;
+}
+
+export type Contribution = {
+  id: number;
+  campaignId: number;
+  contributorId: Address;
+  amount: number;
+  transactionHash: string;
+  createdAt: Date;
+}

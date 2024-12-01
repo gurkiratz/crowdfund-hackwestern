@@ -74,6 +74,10 @@ export default function CreateCampaign() {
     }
   }
 
+  if (status !== 'connected' && !accountAddress) {
+    return <div className="container mx-auto px-4 py-8">Please connect your wallet to create a campaign.</div>
+  }
+  
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-8">Create a New Campaign</h1>
@@ -131,7 +135,7 @@ export default function CreateCampaign() {
             htmlFor="goal"
             className="block text-gray-700 text-sm font-bold mb-2"
           >
-            Goal (ETH)
+            Goal (STARK)
           </label>
           <input
             type="number"
