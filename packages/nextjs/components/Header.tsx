@@ -135,7 +135,7 @@ export const Header = () => {
               setIsDrawerOpen((prevIsOpenState) => !prevIsOpenState)
             }}
           >
-            <CakeIcon className="h-1/2" />
+            <Bars3Icon className="h-1/2" />
           </label>
           {isDrawerOpen && (
             <ul
@@ -177,24 +177,7 @@ export const Header = () => {
             Wallet Not Deployed
           </span>
         ) : null}
-        <Link
-          href="/"
-          className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
-        >
-          Home
-        </Link>
-        <Link
-          href="/create-campaign"
-          className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
-        >
-          Create Campaign
-        </Link>
-        <Link
-          href="/dashboard"
-          className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
-        >
-          Dashboard
-        </Link>
+      
         <CustomConnectButton />
         {/* <FaucetButton /> */}
         <SwitchTheme

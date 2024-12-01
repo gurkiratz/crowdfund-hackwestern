@@ -7,7 +7,7 @@ const deployedContracts = {
   devnet: {
     YourContract: {
       address:
-        "0x1078255d42c0329c8d045a224b9972e93497e4649d317c44bab851908e08a0f",
+        "0x6d21f8a1e050ecd4f92348509897bc1dba478e5f46c960e0ba810b656b5c02f",
       abi: [
         {
           type: "impl",
@@ -260,6 +260,66 @@ const deployedContracts = {
       ],
       classHash:
         "0x4945f25b95df18a9a9820e3469812f099a484a17b1fdf2a350470319cb7f08a",
+    },
+    Counter: {
+      address:
+        "0x4b76a29e3ee6097209cb05418d9c37d3195e8970447019fa8c1b71d6632600d",
+      abi: [
+        {
+          type: "impl",
+          name: "SimpleCounter",
+          interface_name: "contracts::Counter::ISimpleCounter",
+        },
+        {
+          type: "interface",
+          name: "contracts::Counter::ISimpleCounter",
+          items: [
+            {
+              type: "function",
+              name: "get_current_count",
+              inputs: [],
+              outputs: [
+                {
+                  type: "core::integer::u128",
+                },
+              ],
+              state_mutability: "view",
+            },
+            {
+              type: "function",
+              name: "increment",
+              inputs: [],
+              outputs: [],
+              state_mutability: "external",
+            },
+            {
+              type: "function",
+              name: "decrement",
+              inputs: [],
+              outputs: [],
+              state_mutability: "external",
+            },
+          ],
+        },
+        {
+          type: "constructor",
+          name: "constructor",
+          inputs: [
+            {
+              name: "init_value",
+              type: "core::integer::u128",
+            },
+          ],
+        },
+        {
+          type: "event",
+          name: "contracts::Counter::Counter::Event",
+          kind: "enum",
+          variants: [],
+        },
+      ],
+      classHash:
+        "0x597b217c48a54db5ee54aeda67f4bfbb234540719bdc2302f356f83d9b91c69",
     },
   },
 } as const;

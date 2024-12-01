@@ -4,8 +4,11 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 // import { useAuth } from '@clerk/nextjs'
 import { useAccount, useNetwork } from '@starknet-react/core'
+import { useScaffoldReadContract } from '~~/hooks/scaffold-stark/useScaffoldReadContract';
 
 export default function CreateCampaign() {
+
+
   const [title, setTitle] = useState('')
   const [imageUrl, setImageUrl] = useState('')
   const [description, setDescription] = useState('')
@@ -14,7 +17,6 @@ export default function CreateCampaign() {
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  // const { userId } = useAuth()
 
   const { account, status, address: accountAddress } = useAccount()
 
