@@ -3,6 +3,7 @@ import * as chains from "@starknet-react/chains";
 export type ScaffoldConfig = {
   targetNetworks: readonly chains.Chain[];
   pollingInterval: number;
+  alchemyApiKey?: string;
   onlyLocalBurnerWallet: boolean;
   rpcProviderUrl: string;
   walletAutoConnect: boolean;
@@ -10,13 +11,14 @@ export type ScaffoldConfig = {
 };
 
 const scaffoldConfig = {
-  targetNetworks: [chains.devnet, ],
+  targetNetworks: [chains.devnet, chains.sepolia],
   // Only show the Burner Wallet when running on devnet
   onlyLocalBurnerWallet: false,
   rpcProviderUrl: process.env.NEXT_PUBLIC_PROVIDER_URL || "",
   // The interval at which your front-end polls the RPC servers for new data
   // it has no effect if you only target the local network (default is 30_000)
   pollingInterval: 30_000,
+  alchemyApiKey: process.env.NEXT_PUBLIC_ALCHEMY_API_KEY,
   /**
    * Auto connect:
    * 1. If the user was connected into a wallet before, on page reload reconnect automatically

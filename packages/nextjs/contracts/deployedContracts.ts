@@ -5,150 +5,134 @@
 
 const deployedContracts = {
   devnet: {
-    YourContract: {
+    NameRegistry: {
       address:
-        "0x6d21f8a1e050ecd4f92348509897bc1dba478e5f46c960e0ba810b656b5c02f",
+        "0x35fd37dabd9dd5860cd4bfaa8a2624988fb03b3ccb09219af77337888ba212d",
       abi: [
         {
           type: "impl",
-          name: "YourContractImpl",
-          interface_name: "contracts::YourContract::IYourContract",
-        },
-        {
-          type: "struct",
-          name: "core::byte_array::ByteArray",
-          members: [
-            {
-              name: "data",
-              type: "core::array::Array::<core::bytes_31::bytes31>",
-            },
-            {
-              name: "pending_word",
-              type: "core::felt252",
-            },
-            {
-              name: "pending_word_len",
-              type: "core::integer::u32",
-            },
-          ],
-        },
-        {
-          type: "struct",
-          name: "core::integer::u256",
-          members: [
-            {
-              name: "low",
-              type: "core::integer::u128",
-            },
-            {
-              name: "high",
-              type: "core::integer::u128",
-            },
-          ],
+          name: "NameRegistry",
+          interface_name: "contracts::NameRegistry::INameRegistry",
         },
         {
           type: "enum",
-          name: "core::bool",
+          name: "contracts::NameRegistry::NameRegistry::RegistrationType",
           variants: [
             {
-              name: "False",
-              type: "()",
+              name: "Finite",
+              type: "core::integer::u64",
             },
             {
-              name: "True",
+              name: "Infinite",
               type: "()",
             },
           ],
         },
         {
-          type: "interface",
-          name: "contracts::YourContract::IYourContract",
-          items: [
+          type: "struct",
+          name: "contracts::NameRegistry::NameRegistry::Person",
+          members: [
             {
-              type: "function",
-              name: "greeting",
-              inputs: [],
-              outputs: [
-                {
-                  type: "core::byte_array::ByteArray",
-                },
-              ],
-              state_mutability: "view",
+              name: "address",
+              type: "core::starknet::contract_address::ContractAddress",
             },
             {
-              type: "function",
-              name: "set_greeting",
-              inputs: [
-                {
-                  name: "new_greeting",
-                  type: "core::byte_array::ByteArray",
-                },
-                {
-                  name: "amount_eth",
-                  type: "core::integer::u256",
-                },
-              ],
-              outputs: [],
-              state_mutability: "external",
-            },
-            {
-              type: "function",
-              name: "withdraw",
-              inputs: [],
-              outputs: [],
-              state_mutability: "external",
-            },
-            {
-              type: "function",
-              name: "premium",
-              inputs: [],
-              outputs: [
-                {
-                  type: "core::bool",
-                },
-              ],
-              state_mutability: "view",
+              name: "name",
+              type: "core::felt252",
             },
           ],
         },
         {
-          type: "impl",
-          name: "OwnableImpl",
-          interface_name: "openzeppelin_access::ownable::interface::IOwnable",
+          type: "struct",
+          name: "contracts::NameRegistry::NameRegistry::RegistrationInfo",
+          members: [
+            {
+              name: "name",
+              type: "core::felt252",
+            },
+            {
+              name: "registration_type",
+              type: "contracts::NameRegistry::NameRegistry::RegistrationType",
+            },
+            {
+              name: "registration_date",
+              type: "core::integer::u64",
+            },
+          ],
         },
         {
           type: "interface",
-          name: "openzeppelin_access::ownable::interface::IOwnable",
+          name: "contracts::NameRegistry::INameRegistry",
           items: [
             {
               type: "function",
-              name: "owner",
-              inputs: [],
+              name: "store_name",
+              inputs: [
+                {
+                  name: "name",
+                  type: "core::felt252",
+                },
+                {
+                  name: "registration_type",
+                  type: "contracts::NameRegistry::NameRegistry::RegistrationType",
+                },
+              ],
+              outputs: [],
+              state_mutability: "external",
+            },
+            {
+              type: "function",
+              name: "get_name",
+              inputs: [
+                {
+                  name: "address",
+                  type: "core::starknet::contract_address::ContractAddress",
+                },
+              ],
               outputs: [
                 {
-                  type: "core::starknet::contract_address::ContractAddress",
+                  type: "core::felt252",
                 },
               ],
               state_mutability: "view",
             },
             {
               type: "function",
-              name: "transfer_ownership",
-              inputs: [
+              name: "get_owner",
+              inputs: [],
+              outputs: [
                 {
-                  name: "new_owner",
-                  type: "core::starknet::contract_address::ContractAddress",
+                  type: "contracts::NameRegistry::NameRegistry::Person",
                 },
               ],
-              outputs: [],
-              state_mutability: "external",
+              state_mutability: "view",
             },
             {
               type: "function",
-              name: "renounce_ownership",
+              name: "get_owner_name",
               inputs: [],
-              outputs: [],
-              state_mutability: "external",
+              outputs: [
+                {
+                  type: "core::felt252",
+                },
+              ],
+              state_mutability: "view",
+            },
+            {
+              type: "function",
+              name: "get_registration_info",
+              inputs: [
+                {
+                  name: "address",
+                  type: "core::starknet::contract_address::ContractAddress",
+                },
+              ],
+              outputs: [
+                {
+                  type: "contracts::NameRegistry::NameRegistry::RegistrationInfo",
+                },
+              ],
+              state_mutability: "view",
             },
           ],
         },
@@ -158,168 +142,53 @@ const deployedContracts = {
           inputs: [
             {
               name: "owner",
-              type: "core::starknet::contract_address::ContractAddress",
+              type: "contracts::NameRegistry::NameRegistry::Person",
             },
           ],
         },
         {
+          type: "function",
+          name: "get_contract_name",
+          inputs: [],
+          outputs: [
+            {
+              type: "core::felt252",
+            },
+          ],
+          state_mutability: "view",
+        },
+        {
           type: "event",
-          name: "openzeppelin_access::ownable::ownable::OwnableComponent::OwnershipTransferred",
+          name: "contracts::NameRegistry::NameRegistry::StoredName",
           kind: "struct",
           members: [
             {
-              name: "previous_owner",
+              name: "user",
               type: "core::starknet::contract_address::ContractAddress",
               kind: "key",
             },
             {
-              name: "new_owner",
-              type: "core::starknet::contract_address::ContractAddress",
-              kind: "key",
-            },
-          ],
-        },
-        {
-          type: "event",
-          name: "openzeppelin_access::ownable::ownable::OwnableComponent::OwnershipTransferStarted",
-          kind: "struct",
-          members: [
-            {
-              name: "previous_owner",
-              type: "core::starknet::contract_address::ContractAddress",
-              kind: "key",
-            },
-            {
-              name: "new_owner",
-              type: "core::starknet::contract_address::ContractAddress",
-              kind: "key",
-            },
-          ],
-        },
-        {
-          type: "event",
-          name: "openzeppelin_access::ownable::ownable::OwnableComponent::Event",
-          kind: "enum",
-          variants: [
-            {
-              name: "OwnershipTransferred",
-              type: "openzeppelin_access::ownable::ownable::OwnableComponent::OwnershipTransferred",
-              kind: "nested",
-            },
-            {
-              name: "OwnershipTransferStarted",
-              type: "openzeppelin_access::ownable::ownable::OwnableComponent::OwnershipTransferStarted",
-              kind: "nested",
-            },
-          ],
-        },
-        {
-          type: "event",
-          name: "contracts::YourContract::YourContract::GreetingChanged",
-          kind: "struct",
-          members: [
-            {
-              name: "greeting_setter",
-              type: "core::starknet::contract_address::ContractAddress",
-              kind: "key",
-            },
-            {
-              name: "new_greeting",
-              type: "core::byte_array::ByteArray",
-              kind: "key",
-            },
-            {
-              name: "premium",
-              type: "core::bool",
-              kind: "data",
-            },
-            {
-              name: "value",
-              type: "core::integer::u256",
+              name: "name",
+              type: "core::felt252",
               kind: "data",
             },
           ],
         },
         {
           type: "event",
-          name: "contracts::YourContract::YourContract::Event",
+          name: "contracts::NameRegistry::NameRegistry::Event",
           kind: "enum",
           variants: [
             {
-              name: "OwnableEvent",
-              type: "openzeppelin_access::ownable::ownable::OwnableComponent::Event",
-              kind: "flat",
-            },
-            {
-              name: "GreetingChanged",
-              type: "contracts::YourContract::YourContract::GreetingChanged",
+              name: "StoredName",
+              type: "contracts::NameRegistry::NameRegistry::StoredName",
               kind: "nested",
             },
           ],
         },
       ],
       classHash:
-        "0x4945f25b95df18a9a9820e3469812f099a484a17b1fdf2a350470319cb7f08a",
-    },
-    Counter: {
-      address:
-        "0x4b76a29e3ee6097209cb05418d9c37d3195e8970447019fa8c1b71d6632600d",
-      abi: [
-        {
-          type: "impl",
-          name: "SimpleCounter",
-          interface_name: "contracts::Counter::ISimpleCounter",
-        },
-        {
-          type: "interface",
-          name: "contracts::Counter::ISimpleCounter",
-          items: [
-            {
-              type: "function",
-              name: "get_current_count",
-              inputs: [],
-              outputs: [
-                {
-                  type: "core::integer::u128",
-                },
-              ],
-              state_mutability: "view",
-            },
-            {
-              type: "function",
-              name: "increment",
-              inputs: [],
-              outputs: [],
-              state_mutability: "external",
-            },
-            {
-              type: "function",
-              name: "decrement",
-              inputs: [],
-              outputs: [],
-              state_mutability: "external",
-            },
-          ],
-        },
-        {
-          type: "constructor",
-          name: "constructor",
-          inputs: [
-            {
-              name: "init_value",
-              type: "core::integer::u128",
-            },
-          ],
-        },
-        {
-          type: "event",
-          name: "contracts::Counter::Counter::Event",
-          kind: "enum",
-          variants: [],
-        },
-      ],
-      classHash:
-        "0x597b217c48a54db5ee54aeda67f4bfbb234540719bdc2302f356f83d9b91c69",
+        "0x2a13a7f4aa9911b979ee23604d6a4a650993f79ec1acc6a1a5ba7cfc1409144",
     },
   },
 } as const;

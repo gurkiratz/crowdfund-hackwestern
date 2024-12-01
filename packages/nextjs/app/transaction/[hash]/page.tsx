@@ -22,7 +22,7 @@ export default function TransactionPage({ params }: { params: { hash: string } }
           <span className="font-semibold">Value:</span> 1.5 ETH
         </p>
         <a
-          href={`https://etherscan.io/tx/${params.hash}`}
+          href={`https://starkscan.io/tx/${params.hash}`}
           target="_blank"
           rel="noopener noreferrer"
           className="text-blue-500 hover:underline"

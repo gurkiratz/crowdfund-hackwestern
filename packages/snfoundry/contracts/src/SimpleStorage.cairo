@@ -1,26 +1,23 @@
-#[starknet::interface]
-trait ISimpleStorage<T> {
-    fn set(ref self: T, x: u128);
-    fn get(self: @T) -> u128;
-}
- 
+
+
 #[starknet::contract]
-mod SimpleStorage {
-    use starknet::storage::{StoragePointerReadAccess, StoragePointerWriteAccess};
+pub mod SimpleStorage {
+    use starknet::ContractAddress;
+    use starknet::storage::{Map, StorageMapReadAccess, StorageMapWriteAccess};
  
     #[storage]
     struct Storage {
-        stored_data: u128
+        map: Map::<ContractAddress, felt252>,
     }
  
     #[abi(embed_v0)]
-    impl SimpleStorage of super::ISimpleStorage<ContractState> {
-        fn set(ref self: ContractState, x: u128) {
-            self.stored_data.write(x);
+    impl MapContractImpl of super::IMapContract<ContractState> {
+        fn set(ref self: ContractState, key: ContractAddress, value: felt252) {
+            self.map.write(key, value);
         }
  
-        fn get(self: @ContractState) -> u128 {
-            self.stored_data.read()
+        fn get(self: @ContractState, key: ContractAddress) -> felt252 {
+            self.map.read(key)
         }
     }
 }

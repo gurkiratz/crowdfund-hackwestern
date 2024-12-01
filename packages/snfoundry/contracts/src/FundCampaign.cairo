@@ -1,41 +1,53 @@
+#[starknet::interface]
+trait IFundCampaign<CampaignState> {
+    fn contribute(ref self: CampaignState, user: ContractAddress, amount: u256);
+    // fn get_user_contributions(self: @CampaignState, user: ContractAddress) -> u256;
+    fn get_total_contributions(self: @CampaignState) -> u256;
+    fn get_contributor_count(self: @CampaignState) -> u256;
+}
+
 #[starknet::contract]
 mod FundCampaign {
-    use starknet::storage::Map;
-    use starknet::{ContractAddress, get_caller_address};
-    use openzeppelin_token::erc20::interface::{IERC20Dispatcher, IERC20DispatcherTrait};
+    // use starknet::storage::{Map, StorageMapReadAccess, StorageMapWriteAccess};
+    use starknet::storage::{StoragePointerReadAccess, StoragePointerWriteAccess};
+    use starknet::ContractAddress;
+    use starknet::get_caller_address;
 
     #[storage]
     struct Storage {
-        total_contributions: u256,
-        contributions: Map<ContractAddress, u256>,
+        pub total_contributions: u256,
+        // pub contributions: Map<ContractAddress, u256>,
+        pub contributor_count: u32,
+    }
+
+    #[constructor]
+        fn constructor(ref self: ContractState) {
+            self.total_contributions.write(0);
     }
 
     #[abi(embed_v0)]
-    impl FundCampaign {
-        #[constructor]
-        fn constructor(ref self: ContractState) {
-            self.total_contributions.write(0_u256);
+    impl FundCampaign of super::IFundCampaign<ContractState> {
+        fn contribute(ref self: ContractState, user: ContractAddress, amount: u256) {
+            let old_amount: u256 = self.contributions.read(user);
+
+            if old_amount == 0 {
+                let index = self.contributor_count.read();
+                self.contributor_count.write(index + 1);
+            }
+            // self.contributions.write(user, old_amount + amount);
+            self.total_contributions.write(self.total_contributions.read() + amount);
+      }
+
+        // fn get_user_contributions(self: @ContractState<CampaignState>, user: ContractAddress) -> u256 {
+        //     return self.contributions.read(user);
+        // }
+
+        fn get_total_contributions(self: @ContractState<CampaignState>) -> u256 {
+            return self.total_contributions.read();
         }
 
-        #[external]
-        fn contribute(ref self: ContractState, amount: u256) {
-            let caller = get_caller_address();
-            let current_contribution = self.contributions.get(caller).unwrap_or(0_u256);
-            let new_contribution = current_contribution + amount;
-
-            self.contributions.insert(caller, new_contribution);
-            let total_contributions = self.total_contributions.read();
-            self.total_contributions.write(total_contributions + amount);
-        }
-
-        #[view]
-        fn get_total_contributions(self: @ContractState) -> u256 {
-            self.total_contributions.read()
-        }
-
-        #[view]
-        fn get_contribution(self: @ContractState, contributor: ContractAddress) -> u256 {
-            self.contributions.get(contributor).unwrap_or(0_u256)
+        fn get_contributor_count(self: @ContractState<CampaignState>) -> u256 {
+            return self.contributor_count.read();
         }
     }
 }
